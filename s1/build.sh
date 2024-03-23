@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/zsh
+
+source ~/.zshrc
 
 for filename in *.c; do
     echo "compiling $filename"
