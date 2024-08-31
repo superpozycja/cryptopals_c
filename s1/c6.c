@@ -39,7 +39,7 @@ float get_i_c_m(ba *ct, unsigned int m)
 		chunk->len = ct->len / m;
 		chunk->val = (uint8_t *) malloc(sizeof(uint8_t) * chunk->len);
 		
-		for (j = 0, k = 0; j <chunk->len &&  k + i < ct->len; j++, k += m)
+		for (j = 0, k = 0; j < chunk->len &&  k + i < ct->len; j++, k += m)
 			chunk->val[j] = ct->val[k + i];
 		res += i_c(chunk);
 	}
