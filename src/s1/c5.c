@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <ba.h>
-#include <cryptanalysis.h>
+#include <analysis.h>
 
 int main()
 {

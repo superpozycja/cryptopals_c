@@ -1,5 +1,5 @@
 #include <ba.h>
-#include <cryptanalysis.h>
+#include <analysis.h>
 
 int main(int argc, char* argv[]) 
 {
