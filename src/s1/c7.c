@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ba.h>
-#include <openssl/aes.h>
-#include <openssl/conf.h>
-#include <openssl/evp.h>
-#include <openssl/err.h>
 
 const char b64table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -60,6 +56,7 @@ int base64_to_hex(char **hex, char *b64)
 	(*hex)[len-1] = '\0';
 }
 
+/*
 int decrypt(unsigned char *ct, int ct_len, unsigned char *key,
 	    unsigned char *pt)
 {
@@ -85,6 +82,7 @@ int decrypt(unsigned char *ct, int ct_len, unsigned char *key,
 	EVP_CIPHER_CTX_free(ctx);
 	return pt_len;
 }
+*/
 
 int main(int argc, char *argv[])
 {
@@ -112,7 +110,7 @@ int main(int argc, char *argv[])
 	
 	pt = (char *) malloc(sizeof(char) * strlen(hex) + 1);
 
-	pt_len = decrypt(hex, strlen(hex), key, pt);
+	//pt_len = decrypt(hex, strlen(hex), key, pt);
 
 	/* Add a NULL terminator. We are expecting printable text */
 	//pt[pt_len] = '\0';
