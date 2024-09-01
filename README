@@ -2,6 +2,6 @@
 
 solutions to cryptopals challenges [1] written in plain c, without libraries,
 from scratch. none of the code presented here is of use in production-grade
-code so don't even get any ideas.
+code (obviously)
 
 [1] https://cryptopals.com/
