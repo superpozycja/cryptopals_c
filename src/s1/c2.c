@@ -1,6 +1,7 @@
-#include <ba.h> /* see my tools repo for this */
+#include <ba.h>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 	ba* a;
 	ba* b;
 
@@ -9,6 +10,7 @@ int main(int argc, char* argv[]) {
 
 	a = ba_from_hex(argv[1]);
 	b = ba_from_hex(argv[2]);
+
 	if (a == NULL || b == NULL) {
 		return -1;
 	}
