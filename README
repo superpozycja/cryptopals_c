@@ -1,7 +1,8 @@
 				  cryptopals_c
 
 solutions to cryptopals challenges [1] written in plain c, without libraries,
-from scratch. none of the code presented here is of use in production-grade
-code (obviously)
+from scratch.
+
+this code is not cryptographically secure (paradoxically)
 
 [1] https://cryptopals.com/
