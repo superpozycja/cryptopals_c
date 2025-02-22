@@ -1,5 +1,5 @@
-#ifndef BA_H
-#define BA_H
+#ifndef BA_H_1e491544
+#define BA_H_1e491544
 
 #include <stdlib.h>
 #include <string.h>

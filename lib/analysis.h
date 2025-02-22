@@ -1,5 +1,5 @@
-#ifndef ANALYSIS_H
-#define ANALYSIS_H
+#ifndef ANALYSIS_H_1e491544
+#define ANALYSIS_H_1e491544
 
 #include <ctype.h>
 #include <string.h>

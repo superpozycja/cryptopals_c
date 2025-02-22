@@ -1,5 +1,5 @@
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef UTIL_H_1e491544
+#define UTIL_H_1e491544
 
 #include <stdio.h>
 #include <stdlib.h>
