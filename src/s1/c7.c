@@ -4,34 +4,6 @@
 #include <ba.h>
 #include <util.h>
 
-/*
-int decrypt(unsigned char *ct, int ct_len, unsigned char *key,
-	    unsigned char *pt)
-{
-	EVP_CIPHER_CTX *ctx;
-	int pt_len;
-	int len;
-
-	if (!(ctx = EVP_CIPHER_CTX_new()))
-		return -1;
-
-	if(EVP_DecryptInit_ex(ctx, EVP_aes_128_ecb(), NULL, key, NULL) != 1)
-		return -1;
-
-	if(EVP_DecryptUpdate(ctx, pt, &len, ct, ct_len) != 1)
-		return -1;
-
-	pt_len = len;
-
-	if(EVP_DecryptFinal_ex(ctx, pt + len, &len) != 1)
-		return -1;
-	pt_len += len;
-
-	EVP_CIPHER_CTX_free(ctx);
-	return pt_len;
-}
-*/
-
 int main(int argc, char *argv[])
 {
 	unsigned char *key = (unsigned char*) "YELLOW SUBMARINE";
@@ -55,11 +27,6 @@ int main(int argc, char *argv[])
 	}
 
 	base64_to_hex(&hex, b64);
-	
-	pt = (char *) malloc(sizeof(char) * strlen(hex) + 1);
-
-	//pt_len = decrypt(hex, strlen(hex), key, pt);
-
-	/* Add a NULL terminator. We are expecting printable text */
-	//pt[pt_len] = '\0';
+	printf("%s\n", hex);
+	return 0;
 }

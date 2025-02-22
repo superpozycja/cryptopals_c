@@ -15,7 +15,7 @@ void break_w_keylen(ba *ct, unsigned int m)
 
 		chunk->len = ct->len / m;
 		chunk->val = (uint8_t *) malloc(sizeof(uint8_t) * chunk->len);
-		
+
 		for (j = 0, k = 0; j <chunk->len &&  k + i < ct->len; j++, k += m)
 			chunk->val[j] = ct->val[k + i];
 
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
 	}
 
 	base64_to_hex(&hex, b64);
-	ct = ba_from_hex(hex);	
-	
+	ct = ba_from_hex(hex);
+
 	int m = guess_vigenere_keylen(ct);
 
 	break_w_keylen(ct, m);

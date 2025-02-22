@@ -100,6 +100,7 @@ static float get_i_c_m(ba *ct, unsigned int m)
 {
 	float res;
 	int i;
+
 	res = 0;
 	for (i = 0; i < m; i++) {
 		ba *chunk = (ba *) malloc(sizeof(ba));
