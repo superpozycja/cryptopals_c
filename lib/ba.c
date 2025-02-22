@@ -1,6 +1,6 @@
 #include "ba.h"
 
-ba* ba_from_hex(char* hex) 
+ba* ba_from_hex(char* hex)
 {
 	uint8_t* b_val;
 	size_t b_len;
@@ -58,7 +58,7 @@ ba* ba_from_string(char *s)
 	return b;
 }
 
-ba* ba_from_hex_n(char* hex, unsigned int n) 
+ba* ba_from_hex_n(char* hex, unsigned int n)
 {
 	uint8_t* b_val;
 	size_t offset;
@@ -101,24 +101,24 @@ ba* ba_from_hex_n(char* hex, unsigned int n)
 	return b;
 }
 
-void ba_fprint(ba* b, FILE* stream, int prec) 
-{
-	int len;
-	int i;	
-
-	len = (prec > b->len) || prec == 0 ? b->len : prec;
-	for (i = 0; i < len; i++)
-		fprintf(stream, "%02x", (b->val)[i]);
-}
-
-void ba_fprint_ascii(ba* b, FILE* stream, int prec) 
+void ba_fprint(ba* b, FILE* stream, int prec)
 {
 	int len;
 	int i;
 
 	len = (prec > b->len) || prec == 0 ? b->len : prec;
 	for (i = 0; i < len; i++)
-		if (isprint((b->val)[i])) 
+		fprintf(stream, "%02x", (b->val)[i]);
+}
+
+void ba_fprint_ascii(ba* b, FILE* stream, int prec)
+{
+	int len;
+	int i;
+
+	len = (prec > b->len) || prec == 0 ? b->len : prec;
+	for (i = 0; i < len; i++)
+		if (isprint((b->val)[i]))
 			fprintf(stream, "%c", (b->val)[i]);
 		else if (b->val[i] == 0x0a)
 			fprintf(stream, "\n");
@@ -126,7 +126,7 @@ void ba_fprint_ascii(ba* b, FILE* stream, int prec)
 			fprintf(stream, "\\b%02x", (b->val)[i]);
 }
 
-void ba_xor(ba* a, ba* b) 
+void ba_xor(ba* a, ba* b)
 {
 	int len;
 	int i;
@@ -149,7 +149,7 @@ int ba_copy(ba *dst, ba *src)
 
 }
 
-void ba_free(ba* b) 
+void ba_free(ba* b)
 {
 	free(b->val);
 	free(b);

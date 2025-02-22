@@ -3,7 +3,7 @@
 unsigned long score_letter(char c)
 {
 	/* this is approximate, however this shouldnt really make a difference
-	 * unless you have multiple ciphertexts very close to each other as 
+	 * unless you have multiple ciphertexts very close to each other as
 	 * far as the score is concerned - meaning this is enough to weed out
 	 * junk (nonenglish) byte sequences */
 	unsigned long freqs[] = {
@@ -11,7 +11,7 @@ unsigned long score_letter(char c)
 		22, 20, 61, 70, 1,
 		8, 40, 24, 67, 75,
 		19, 1, 60, 63, 91,
-		28, 10, 24, 2, 20, 
+		28, 10, 24, 2, 20,
 		1};
 
 	c = tolower(c);
@@ -109,7 +109,7 @@ static float get_i_c_m(ba *ct, unsigned int m)
 
 		chunk->len = ct->len / m;
 		chunk->val = (uint8_t *) malloc(sizeof(uint8_t) * chunk->len);
-		
+
 		for (j = 0, k = 0; j < chunk->len &&  k + i < ct->len; j++, k += m)
 			chunk->val[j] = ct->val[k + i];
 		res += index_of_coincidence(chunk);
@@ -126,7 +126,7 @@ unsigned int guess_vigenere_keylen(ba *ct)
 	max = 0;
 	for (m = 1; m < 40; m++) {
 		float avg;
-		
+
 		avg = get_i_c_m(ct, m);
 		if (avg > max) {
 			max = avg;

@@ -31,6 +31,7 @@ int main(int argc, char* argv[])
 		return -1;
 
 	p = fopen(argv[1], "r");
+
 	maxscore = 0;
 	best = (ba *) malloc(sizeof(ba));
 

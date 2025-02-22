@@ -1,7 +1,7 @@
 #include <ba.h>
 #include <analysis.h>
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
 	ba *ct;
 

@@ -12,7 +12,7 @@
 typedef struct {
 	size_t len;
 	uint8_t *val;
-} ba; 
+} ba;
 
 ba* ba_from_hex(char *hex);
 ba* ba_from_hex_n(char *hex, unsigned int n);
