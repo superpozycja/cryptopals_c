@@ -61,6 +61,7 @@ static int sub_word(ba *input, ba **output) {
 static int key_expansion(ba *key, unsigned int keylen, unsigned int rounds,
 			 ba *round_keys[4*(rounds + 1)])
 {
+	/* number of 4-byte words, help to implement spec */
 	const int nk = keylen / 4;
 	int i;
 
@@ -118,6 +119,108 @@ static int key_expansion(ba *key, unsigned int keylen, unsigned int rounds,
 	return 0;
 }
 
+static int add_round_key(ba *state[4], ba *round_keys[4])
+{
+	int i;
+
+	for (i = 0; i < 4; i++) {
+		int j;
+
+		for (j = 0; j < 4; j++)
+			state[i]->val[j] ^= round_keys[j]->val[i];
+	}
+
+	return 0;
+}
+
+static int sub_bytes(ba *state[4])
+{
+	int i;
+	int j;
+
+	for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+			state[i]->val[j] = sbox[state[i]->val[j]];
+
+	return 0;
+}
+
+static int shift_rows(ba *state[4])
+{
+	int i;
+
+	for (i = 1; i < 4; i++) {
+		ba *tmp;
+
+		tmp = ba_alloc(4);
+		ba_copy(tmp, state[i]);
+		rot_word(tmp, &state[i], i);
+		ba_free(tmp);
+	}
+}
+
+static uint8_t galois_mul(uint8_t a, uint8_t b)
+{
+	uint8_t p;
+	int i;
+
+	p = 0;
+	for (i = 0; i < 8; i++) {
+		uint8_t h;
+
+		if (b & 1)
+			p ^= a;
+		h = a & 0x80;
+		a <<= 1;
+		if (h)
+			a ^= 0x1b;
+		b >>= 1;
+	}
+
+	return p;
+}
+
+static int mix_columns(ba *state[4])
+{
+	ba *tmp[4];
+	int c;
+	int i;
+
+	for (i = 0; i < 4; i++) {
+		tmp[i] = ba_alloc(4);
+		ba_copy(tmp[i], state[i]);
+	}
+
+	for (c = 0; c < 4; c++) {
+		int j;
+
+		for (j = 0; j < 4; j++) {
+			state[j]->val[c] = galois_mul(tmp[(j)%4]->val[c], 2)
+			                 ^ galois_mul(tmp[(j+1)%4]->val[c], 3)
+					 ^ tmp[(j+2)%4]->val[c]
+					 ^ tmp[(j+3)%4]->val[c];
+
+		}
+	}
+
+	for (i = 0; i < 4; i++)
+		ba_free(tmp[i]);
+
+	return 0;
+}
+
+static void print_state(ba *state[4])
+{
+	int i;
+
+	for (i = 0; i < 4; i++) {
+		ba_fprint(state[i], stdout, 0);
+		printf("\n");
+	}
+
+	printf("\n");
+}
+
 static int aes_generic(unsigned int rounds, unsigned int keylen,
 		       ba *plaintext, ba *key, ba* ciphertext)
 {
@@ -139,21 +242,33 @@ static int aes_generic(unsigned int rounds, unsigned int keylen,
 		return -EINVAL;
 	}
 
-	for (i = 0; i < 16; i++) {
-		(state[i/4]->val)[i%4] = plaintext->val[i];
-	}
+	for (i = 0; i < 16; i++)
+		(state[i%4]->val)[i/4] = plaintext->val[i];
 
 	key_expansion(key, keylen, rounds, round_keys);
 
-	for (i = 0; i < 4*(rounds + 1); i++) {
-		ba_fprint(round_keys[i], stdout, 0);
-		printf("\n");
+	add_round_key(state, round_keys);
+	print_state(state);
+
+	for (i = 1; i < rounds; i++) {
+		sub_bytes(state);
+		print_state(state);
+		shift_rows(state);
+		print_state(state);
+		mix_columns(state);
+		print_state(state);
+		add_round_key(state, round_keys + (4 * i));
+		print_state(state);
 	}
 
+	sub_bytes(state);
+	print_state(state);
+	shift_rows(state);
+	print_state(state);
 
+	add_round_key(state, round_keys + (4 * rounds));
+	print_state(state);
 	/*
-	add_round_key(state, round_keys[0]);
-	for round
 		sub_bytes
 		shift_rows
 		mix_columns
@@ -164,8 +279,14 @@ static int aes_generic(unsigned int rounds, unsigned int keylen,
 	*/
 
 	ciphertext = ba_alloc(16);
+
 	for (i = 0; i < 16; i++)
 		 ciphertext->val[i] = (state[i/4]->val)[i%4];
+
+
+	printf("%x\n", galois_mul(0xd4, 2) ^ galois_mul(0xbf, 3) ^ 0x5d ^ 0x30);
+	ba_fprint(ciphertext, stdout, 0);
+	printf("\n");
 
 	return 0;
 }
