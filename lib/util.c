@@ -7,7 +7,7 @@ static int b64_chunk_to_hex(char **hex, char *b64)
 {
 	unsigned int val;
 	unsigned int sz;
-	unsigned int i;
+	int i;
 
 	if (strlen(b64) != 4)
 		return -1;
@@ -34,11 +34,12 @@ static int b64_chunk_to_hex(char **hex, char *b64)
 int base64_to_hex(char **hex, char *b64)
 {
 	unsigned int len;
+	int i;
 
 	len = (strlen(b64) * 3 / 4) + 2;
 	*hex = (char *) malloc(sizeof(char *) * len);
 
-	for (int i = 0; i < strlen(b64)/4; i++) {
+	for (i = 0; i < strlen(b64)/4; i++) {
 		char b64_chunk[5];
 		char *hex_chunk;
 

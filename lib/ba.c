@@ -103,7 +103,9 @@ ba* ba_from_hex_n(char* hex, unsigned int n)
 	}
 
 	for (o = 0; o < b_len * 2; o += offset) {
-		for (int i = 0; i < offset; i++) {
+		int i;
+
+		for (i = 0; i < offset; i++) {
 			char tmp[3];
 			strncpy(tmp, hex + 2 * i, 2);
 			tmp[2] = '\0';

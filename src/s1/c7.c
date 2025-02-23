@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	ba *ct_ba;
 
 	aes_128_encrypt(pt_ba, key_ba, ct_ba);
-	aes_192_encrypt(pt_ba, key_192_ba, ct_ba);
+	//aes_192_encrypt(pt_ba, key_192_ba, ct_ba);
 
 	return 0;
 }
