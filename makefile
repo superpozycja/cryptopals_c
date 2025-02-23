@@ -6,7 +6,7 @@ all: lib challs
 
 lib: $(LIB_SRC) dirs
 	$(foreach file,$(LIB_SRC),$(CC) -c -shared \
-	-o bin/lib/lib$(notdir $(subst .c,, $(file))).so $(file);)
+	-o bin/lib/lib$(notdir $(subst .c,, $(file))).so $(file) -g;)
 
 
 lib_objs: lib dirs
@@ -21,7 +21,7 @@ challs: $(CHALLS_SRC) dirs lib lib_objs
 	-Ilib/\
 	-Lbin/lib\
 	$(foreach lib_name,$(LIB_OBJS),\
-	-l$(subst lib,,$(subst .so,,$(notdir $(lib_name)))));)
+	-l$(subst lib,,$(subst .so,,$(notdir $(lib_name))))) -g;)
 
 dirs:
 	mkdir -p bin
