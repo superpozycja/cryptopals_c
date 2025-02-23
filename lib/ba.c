@@ -1,5 +1,20 @@
 #include "ba.h"
 
+ba* ba_alloc(unsigned int size)
+{
+	uint8_t* b_val;
+	ba* b;
+
+	b_val = (uint8_t *) malloc(sizeof(uint8_t) * size);
+	b = (ba *) malloc(sizeof(ba));
+
+	b->len = size;
+	b->val = b_val;
+	return b;
+
+	return b;
+}
+
 ba* ba_from_hex(char* hex)
 {
 	uint8_t* b_val;

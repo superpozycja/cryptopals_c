@@ -14,6 +14,7 @@ typedef struct {
 	uint8_t *val;
 } ba;
 
+ba* ba_alloc(unsigned int size);
 ba* ba_from_hex(char *hex);
 ba* ba_from_hex_n(char *hex, unsigned int n);
 ba* ba_from_string(char *s);
