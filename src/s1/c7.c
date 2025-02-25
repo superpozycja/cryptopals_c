@@ -4,6 +4,7 @@
 #include <ba.h>
 #include <util.h>
 #include <aes.h>
+#include <block.h>
 
 int main(int argc, char *argv[])
 {
@@ -12,12 +13,12 @@ int main(int argc, char *argv[])
 	int pt_len;
 	char *b64;
 	char *hex;
-	char *pt;
 	FILE *f;
+	ba *key_ba;
 	ba *ct;
+	ba *pt;
 	int sz;
 
-	/*
 	b64 = (char *) malloc(sizeof(char));
 
 	f = fopen(argv[1], "r");
@@ -29,16 +30,15 @@ int main(int argc, char *argv[])
 	}
 
 	base64_to_hex(&hex, b64);
-	//printf("%s\n", hex);
-	*/
 
-	ba *pt_test_ba = ba_from_hex("3243f6a8885a308d313198a2e0370734");
-	ba *key_test_ba = ba_from_hex("2b7e151628aed2a6abf7158809cf4f3c");
-	ba *key_192_ba = ba_from_hex("8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b");
-	ba *ct_ba;
+	ct = ba_from_hex(hex);
+	key_ba = ba_from_string(key);
 
-	aes_128_encrypt(pt_test_ba, key_test_ba, ct_ba);
-	//aes_192_encrypt(pt_ba, key_192_ba, ct_ba);
+	decrypt_ecb(ct, key_ba, &pt, 16, aes_128_decrypt);
+
+	printf("decrypted successfully\n");
+	ba_fprint_ascii(pt, stdout, 0);
+	printf("\n");
 
 	return 0;
 }
