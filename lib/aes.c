@@ -43,7 +43,6 @@ static uint8_t inv_sbox[0x100] = {
 static int rot_word(ba *input, ba **output, unsigned int offset) {
 	int i;
 
-	*output = ba_alloc(4);
 	for (i = 0; i < 4; i++) {
 		(*output)->val[i] = input->val[(i+offset)%4];
 	}
@@ -52,7 +51,6 @@ static int rot_word(ba *input, ba **output, unsigned int offset) {
 static int sub_word(ba *input, ba **output) {
 	int i;
 
-	*output = ba_alloc(4);
 	for (i = 0; i < 4; i++) {
 		(*output)->val[i] = sbox[input->val[i]];
 	}
@@ -96,7 +94,7 @@ static int key_expansion(ba *key, unsigned int keylen, unsigned int rounds,
 		ba_copy(tmp2, round_keys[i - nk]);
 
 		if (i % nk == 0) {
-			ba *tmp3;
+			ba *tmp3 = ba_alloc(4);
 
 			rot_word(tmp, &tmp3, 1);
 			sub_word(tmp3, &tmp);
@@ -115,6 +113,9 @@ static int key_expansion(ba *key, unsigned int keylen, unsigned int rounds,
 		ba_free(tmp);
 		ba_free(tmp2);
 	}
+
+	for (int i = 0; i < 10; i++)
+		ba_free(rcon[i]);
 
 	return 0;
 }
@@ -321,6 +322,12 @@ static int aes_generic(unsigned int rounds, unsigned int keylen,
 	for (i = 0; i < 16; i++)
 		 (*ciphertext)->val[i] = (state[i%4]->val)[i/4];
 
+	for (i = 0; i < 4; i++)
+		ba_free(state[i]);
+
+	for (i = 0; i < 4 * (rounds + 1); i++)
+		ba_free(round_keys[i]);
+
 	return 0;
 }
 
@@ -368,6 +375,12 @@ static int aes_inv_generic(unsigned int rounds, unsigned int keylen,
 
 	for (i = 0; i < 16; i++)
 		 (*plaintext)->val[i] = (state[i%4]->val)[i/4];
+
+	for (i = 0; i < 4; i++)
+		ba_free(state[i]);
+
+	for (i = 0; i < 4 * (rounds + 1); i++)
+		ba_free(round_keys[i]);
 
 	return 0;
 }
