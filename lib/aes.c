@@ -40,12 +40,12 @@ static uint8_t sbox_inv[0x100] = {
 	0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d
 };
 
-static int rot_word(ba *input, ba **output, unsigned int amt) {
+static int rot_word(ba *input, ba **output, unsigned int offset) {
 	int i;
 
 	*output = ba_alloc(4);
 	for (i = 0; i < 4; i++) {
-		(*output)->val[i] = input->val[(i+amt)%4];
+		(*output)->val[i] = input->val[(i+offset)%4];
 	}
 }
 
