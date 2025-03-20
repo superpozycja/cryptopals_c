@@ -1,4 +1,4 @@
-#include "cryptanalysis.h"
+#include "analysis.h"
 
 unsigned long score_letter(char c)
 {
